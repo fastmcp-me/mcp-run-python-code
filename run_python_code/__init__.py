@@ -3,7 +3,7 @@
 @author:XuMing(xuming624@qq.com)
 @description:
 """
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 from run_python_code.code import RunPythonCode
 

@@ -7,7 +7,7 @@ import sys
 
 from setuptools import setup, find_packages
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 if sys.version_info < (3,):
     sys.exit('Sorry, Python3 is required.')
@@ -47,5 +47,5 @@ setup(
     ],
     packages=find_packages(exclude=['tests']),
     package_dir={'mcp-run-python-code': 'run_python_code'},
-    package_data={'run_python_code': ['*.*']}
+    package_data={'mcp-run-python-code': ['*.*']}
 )
