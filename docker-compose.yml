@@ -34,7 +34,7 @@ services:
     environment:
       # Set log level (optional)
       # LOG_LEVEL: INFO
-    command: ["python3", "-m", "run_python_code.fastapi_server"]
+    command: ["python3", "run_python_code/fastapi_server.py"]
     
   # Optional: Development service with live reload
   # Uncomment the service below for development purposes
