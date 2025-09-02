@@ -42,8 +42,7 @@ Execute Python code directly and optionally return a variable value.
 **Request Body:**
 ```json
 {
-  "code": "x = 10\ny = 20\nz = x + y",
-  "variable_to_return": "z",
+  "code": "x = 10\ny = 20\nz = x + y\nprint(z)",
   "timeout": 90
 }
 ```
@@ -68,8 +67,7 @@ Execute Python code directly and optionally return a variable value.
 curl -X POST "http://localhost:8000/execute" \
   -H "Content-Type: application/json" \
   -d '{
-    "code": "x = 5\ny = 10\nresult = x * y",
-    "variable_to_return": "result"
+    "code": "x = 5\ny = 10\nresult = x * y\nprint(result)"
   }'
 ```
 
