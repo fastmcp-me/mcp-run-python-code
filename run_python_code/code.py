@@ -111,7 +111,6 @@ class RunPythonCode:
         """
         try:
             logger.debug(f"Installing package {package_name}")
-            import sys
             import subprocess
 
             # 使用pip而不是pip3，并捕获输出
