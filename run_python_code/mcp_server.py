@@ -8,6 +8,9 @@ This module provides Python code execution tools via MCP (Model Context Protocol
 from typing import Optional
 from mcp.server.fastmcp import FastMCP
 import tempfile
+import sys
+
+sys.path.append('..')
 from run_python_code.code import RunPythonCode
 
 # Create MCP server instance

@@ -8,12 +8,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 import tempfile
-import os
 import uuid
 from contextlib import asynccontextmanager
 import uvicorn
-from run_python_code.code import RunPythonCode
 from loguru import logger
+import sys
+
+sys.path.append('..')
+from run_python_code.code import RunPythonCode
 
 
 @asynccontextmanager
