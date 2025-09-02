@@ -20,7 +20,7 @@ RUN groupadd -r mcpuser && useradd -r -g mcpuser mcpuser
 COPY requirements.txt .
 
 # Install Python dependencies
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # Copy the rest of the application code
 COPY . .
