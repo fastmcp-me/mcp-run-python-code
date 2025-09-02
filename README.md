@@ -93,9 +93,49 @@ To add the weather MCP server to Cursor, add stdio MCP with command:
 uvx mcp-run-python-code
 ```
 
+### Running the FastAPI server
+You can also run the MCP server with FastAPI:
+
+```bash
+python run_python_code/fastapi_server.py
+```
+This will start a FastAPI server on `http://localhost:8083` with the following endpoints:
+- `GET /health` - Check server health
+- `POST /execute` - Execute Python code
+- `POST /save-and-execute` - Save Python code to a file and execute it
+- `POST /install-package` - Install a Python package using pip
+- `POST /run-file` - Run an existing Python file
+- `GET /docs` - Swagger API documentation
+You can test the API using curl, detail in [API Documentation](https://github.com/shibing624/mcp-run-python-code/blob/main/docs/API-DOCUMENTATION.md).
+
+### Run with Docker
+
+You can run the MCP server using Docker. First, build the Docker image:
+
+```bash
+docker build -t mcp-run-python-code .
+```
+Then, run the container:
+
+```bash
+docker run -p 8000:8000 -it mcp-run-python-code
+```
+
+also, you can use FastAPI server with Docker:
+
+```bash
+docker build -t fastapi-mcp-run-python-code -f Dockerfile.fastapi .
+```
+run the container:
+
+```bash
+docker run -p 8083:8083 -it fastapi-mcp-run-python-code
+```
+You can also use Docker Compose to run the MCP server along with other services. See [Docker Usage](https://github.com/shibing624/mcp-run-python-code/blob/main/docs/README-docker.md) for details.
+
 ### Tools available
 
-- `run_python_code` - Execute Python code and optionally return a variable value
+- `run_python_code` - Execute Python code and return print output or error message
 - `save_to_file_and_run` - Save Python code to a file and execute it
 - `pip_install_package` - Install Python packages using pip
 - `run_python_file` - Run an existing Python file and optionally return a variable value

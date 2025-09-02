@@ -5,46 +5,35 @@ services:
     build: .
     container_name: mcp-run-python-code-server
     restart: unless-stopped
+    ports:
+      - "8000:8000"
     volumes:
-      # Optional: Mount local code for development/testing
-      # - ./code_execution:/tmp/code_execution
-      # Optional: Mount logs directory
-      # - ./logs:/var/log
+    # Optional: Mount local code for development/testing
+    # - ./code_execution:/tmp/code_execution
+    # Optional: Mount logs directory
+    # - ./logs:/var/log
     environment:
-      # Set base directory for code execution (optional)
-      # BASE_DIR: /tmp/code_execution
-      # Set log level (optional)
-      # LOG_LEVEL: INFO
+    # Set base directory for code execution (optional)
+    # BASE_DIR: /tmp/code_execution
+    # Set log level (optional)
+    # LOG_LEVEL: INFO
     stdin_open: true
     tty: true
     # MCP servers typically use stdio transport, so we need to run in interactive mode
-    command: ["mcp-run-python-code"]
+    command: [ "mcp-run-python-code" ]
 
   fastapi-server:
     build: .
     container_name: mcp-fastapi-server
     restart: unless-stopped
     ports:
-      - "8000:8000"
+      - "8083:8083"
     volumes:
-      # Optional: Mount local code for development/testing
-      # - ./code_execution:/tmp/code_execution
-      # Optional: Mount logs directory
-      # - ./logs:/var/log
+    # Optional: Mount local code for development/testing
+    # - ./code_execution:/tmp/code_execution
+    # Optional: Mount logs directory
+    # - ./logs:/var/log
     environment:
-      # Set log level (optional)
-      # LOG_LEVEL: INFO
-    command: ["python3", "run_python_code/fastapi_server.py"]
-    
-  # Optional: Development service with live reload
-  # Uncomment the service below for development purposes
-  # dev:
-  #   build: 
-  #     context: .
-  #     dockerfile: Dockerfile.dev
-  #   volumes:
-  #     - .:/app
-  #   container_name: mcp-run-python-code-dev
-  #   environment:
-  #     PYTHONPATH: /app
-  #   command: ["bash"]
+    # Set log level (optional)
+    # LOG_LEVEL: INFO
+    command: [ "python3", "run_python_code/fastapi_server.py" ]

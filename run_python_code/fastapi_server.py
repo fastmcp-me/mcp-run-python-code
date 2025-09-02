@@ -14,7 +14,7 @@ import uvicorn
 from loguru import logger
 import sys
 
-sys.path.append('..')
+sys.path.append('.')
 from run_python_code.code import RunPythonCode
 
 
@@ -222,4 +222,4 @@ async def run_python_file(request: RunExistingFileRequest):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8083)

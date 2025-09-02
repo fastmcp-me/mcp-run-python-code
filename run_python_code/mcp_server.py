@@ -17,6 +17,8 @@ from run_python_code.code import RunPythonCode
 mcp = FastMCP(
     name="RunPythonCodeServer",
     instructions="Execute Python code, install python packages, and run Python files",
+    host="0.0.0.0",
+    port=8000,
 )
 # Initialize the RunPythonCode tool
 python_runner = RunPythonCode(base_dir=tempfile.mkdtemp())

@@ -9,7 +9,7 @@ The FastAPI server provides RESTful API endpoints for executing Python code, ins
 ## Base URL
 
 ```
-http://localhost:8000
+http://localhost:8083
 ```
 
 ## Authentication
@@ -49,7 +49,6 @@ Execute Python code directly and optionally return a variable value.
 
 **Parameters:**
 - `code` (string, required): The Python code to execute
-- `variable_to_return` (string, optional): Variable name to return its value
 - `timeout` (integer, optional): Execution timeout in seconds (default: 90)
 
 **Response:**
@@ -64,7 +63,7 @@ Execute Python code directly and optionally return a variable value.
 
 **Example:**
 ```bash
-curl -X POST "http://localhost:8000/execute" \
+curl -X POST "http://localhost:8083/execute" \
   -H "Content-Type: application/json" \
   -d '{
     "code": "x = 5\ny = 10\nresult = x * y\nprint(result)"
@@ -105,7 +104,7 @@ Save Python code to a file and execute it.
 
 **Example:**
 ```bash
-curl -X POST "http://localhost:8000/save-and-execute" \
+curl -X POST "http://localhost:8083/save-and-execute" \
   -H "Content-Type: application/json" \
   -d '{
     "file_name": "fibonacci.py",
@@ -144,7 +143,7 @@ Install a Python package using pip.
 
 **Example:**
 ```bash
-curl -X POST "http://localhost:8000/install-package" \
+curl -X POST "http://localhost:8083/install-package" \
   -H "Content-Type: application/json" \
   -d '{
     "package_name": "numpy",
@@ -182,7 +181,7 @@ Run an existing Python file and optionally return a variable value.
 
 **Example:**
 ```bash
-curl -X POST "http://localhost:8000/run-python-file" \
+curl -X POST "http://localhost:8083/run-python-file" \
   -H "Content-Type: application/json" \
   -d '{
     "file_name": "existing_script.py",
@@ -190,57 +189,6 @@ curl -X POST "http://localhost:8000/run-python-file" \
   }'
 ```
 
-### 6. List Files
-
-**GET** `/list-files`
-
-List all Python files in the execution directory.
-
-**Response:**
-```json
-{
-  "files": [
-    {
-      "name": "script1.py",
-      "path": "/tmp/code_execution/script1.py",
-      "size": 1024
-    },
-    {
-      "name": "script2.py",
-      "path": "/tmp/code_execution/script2.py",
-      "size": 2048
-    }
-  ]
-}
-```
-
-### 7. Clear Files
-
-**DELETE** `/clear-files`
-
-Clear all Python files in the execution directory.
-
-**Response:**
-```json
-{
-  "message": "All files cleared"
-}
-```
-
-### 8. Get Statistics
-
-**GET** `/stats`
-
-Get execution statistics and server information.
-
-**Response:**
-```json
-{
-  "total_executions": 42,
-  "base_directory": "/tmp/code_execution",
-  "available_files": 3
-}
-```
 
 ## Error Handling
 
@@ -270,7 +218,7 @@ Common error scenarios:
 import requests
 
 # Execute simple calculation
-response = requests.post("http://localhost:8000/execute", json={
+response = requests.post("http://localhost:8083/execute", json={
     "code": "result = 2 ** 10",
     "variable_to_return": "result"
 })
@@ -283,7 +231,7 @@ print(response.json())
 import requests
 
 # Process JSON data
-response = requests.post("http://localhost:8000/execute", json={
+response = requests.post("http://localhost:8083/execute", json={
     "code": """
 import json
 data = {'name': 'Alice', 'age': 25}
@@ -300,7 +248,7 @@ print(response.json())
 import requests
 
 # Save and run script
-response = requests.post("http://localhost:8000/save-and-execute", json={
+response = requests.post("http://localhost:8083/save-and-execute", json={
     "file_name": "calculator.py",
     "code": """
 def add(a, b):
@@ -322,7 +270,7 @@ print(response.json())
 import requests
 
 # Install package
-response = requests.post("http://localhost:8000/install-package", json={
+response = requests.post("http://localhost:8083/install-package", json={
     "package_name": "pandas"
 })
 print(response.json())
@@ -355,50 +303,36 @@ The server is configured with CORS enabled for all origins. Adjust the `allow_or
 python -m run_python_code.fastapi_server
 
 # Or with uvicorn directly
-uvicorn run_python_code.fastapi_server:app --host 0.0.0.0 --port 8000 --reload
+uvicorn run_python_code.fastapi_server:app --host 0.0.0.0 --port 8083 --reload
 ```
 
 ### API Documentation
 
-- **Swagger UI**: `http://localhost:8000/docs`
-- **ReDoc**: `http://localhost:8000/redoc`
-- **OpenAPI Schema**: `http://localhost:8000/openapi.json`
+- **Swagger UI**: `http://localhost:8083/docs`
+- **ReDoc**: `http://localhost:8083/redoc`
+- **OpenAPI Schema**: `http://localhost:8083/openapi.json`
 
 ### Testing
 
 ```bash
 # Test the API
-curl -X GET "http://localhost:8000/health"
+curl -X GET "http://localhost:8083/health"
 
 # Execute code
-curl -X POST "http://localhost:8000/execute" \
+curl -X POST "http://localhost:8083/execute" \
   -H "Content-Type: application/json" \
   -d '{"code": "print(\"Hello, World!\")"}'
 ```
 
 ## Integration Examples
 
-### JavaScript/Node.js
-```javascript
-const axios = require('axios');
-
-// Execute code
-const response = await axios.post('http://localhost:8000/execute', {
-  code: 'const result = Math.pow(2, 8); result;',
-  variable_to_return: 'result'
-});
-
-console.log(response.data.result); // "256"
-```
-
 ### Python
 ```python
 import requests
 
 # Execute code
-response = requests.post('http://localhost:8000/execute', json={
-    'code': 'sum([1, 2, 3, 4, 5])',
-    'variable_to_return': 'sum'
+response = requests.post('http://localhost:8083/execute', json={
+    'code': 'r = sum([1, 2, 3, 4, 5]);print(r)',
 })
 
 print(response.json()['result'])  # "15"
@@ -409,9 +343,9 @@ print(response.json()['result'])  # "15"
 #!/bin/bash
 
 # Execute code
-RESULT=$(curl -s -X POST "http://localhost:8000/execute" \
+RESULT=$(curl -s -X POST "http://localhost:8083/execute" \
   -H "Content-Type: application/json" \
-  -d '{"code": "import os; result = os.getcwd()", "variable_to_return": "result"}')
+  -d '{"code": "import os; result = os.getcwd();print(result)"}')
 
 echo "Execution result: $RESULT"
 ```
@@ -427,17 +361,17 @@ docker-compose up -d
 docker-compose logs -f fastapi-server
 
 # Access API documentation
-open http://localhost:8000/docs
+open http://localhost:8083/docs
 ```
 
 ### Using Docker Container
 ```bash
 # Build image
-docker build -t mcp-fastapi .
+docker build -t mcp-fastapi -f Dockerfile.fastapi .
 
 # Run container
-docker run -p 8000:8000 mcp-fastapi
+docker run -p 8083:8083 mcp-fastapi
 
 # Test API
-curl -X GET "http://localhost:8000/health"
+curl -X GET "http://localhost:8083/health"
 ```

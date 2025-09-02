@@ -4,7 +4,7 @@ FROM python:3.10-slim
 # Set metadata
 LABEL maintainer="XuMing <xuming624@qq.com>"
 LABEL description="MCP server for running Python code, installing packages, and executing Python files"
-LABEL version="0.0.2"
+LABEL version="0.0.3"
 
 # Set working directory
 WORKDIR /app
@@ -21,6 +21,7 @@ COPY requirements.txt .
 
 # Install Python dependencies
 RUN pip3 install --no-cache-dir -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN pip3 install pandas scipy openpyxl -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # Copy the rest of the application code
 COPY . .
@@ -35,9 +36,6 @@ RUN mkdir -p /tmp/code_execution && \
 
 # Switch to non-root user
 USER mcpuser
-
-# Set the default working directory for code execution
-# WORKDIR .
 
 # Expose ports for both MCP (stdio) and FastAPI
 EXPOSE 8000
