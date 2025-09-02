@@ -37,7 +37,7 @@ RUN mkdir -p /tmp/code_execution && \
 USER mcpuser
 
 # Set the default working directory for code execution
-WORKDIR /tmp/code_execution
+# WORKDIR .
 
 # Expose ports for both MCP (stdio) and FastAPI
 EXPOSE 8000
