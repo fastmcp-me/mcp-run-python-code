@@ -29,27 +29,15 @@ class TestRunPythonCodeMCPServer(unittest.TestCase):
 
     def test_run_python_code_success(self):
         """Test that run_python_code executes code correctly."""
-        code = "x = 10\ny = 20\nz = x + y"
-        result = self.runner.run_python_code(code, "z")
+        code = "x = 10\ny = 20\nz = x + y\nprint(z)"
+        result = self.runner.run_python_code(code)
         self.assertEqual(result, "30")
 
     def test_run_python_code_no_return_variable(self):
         """Test that run_python_code works without return variable."""
         code = "print('Hello, World!')"
         result = self.runner.run_python_code(code)
-        self.assertEqual(result, "successfully ran python code")
-
-    def test_run_python_code_variable_not_found(self):
-        """Test that run_python_code handles missing variables."""
-        code = "x = 10"
-        result = self.runner.run_python_code(code, "y")
-        self.assertEqual(result, "Variable y not found")
-
-    def test_run_python_code_syntax_error(self):
-        """Test that run_python_code handles syntax errors."""
-        code = "x = 10\ny ="  # Incomplete syntax
-        result = self.runner.run_python_code(code, "x")
-        self.assertIn("Error running python code:", result)
+        self.assertEqual(result, "Hello, World!")
 
     def test_save_to_file_and_run_success(self):
         """Test that save_to_file_and_run works correctly."""

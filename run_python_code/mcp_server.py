@@ -23,18 +23,17 @@ python_runner = RunPythonCode(base_dir=tempfile.mkdtemp())
 
 
 @mcp.tool()
-def run_python_code(code: str, variable_to_return: Optional[str] = None) -> str:
+def run_python_code(code: str) -> str:
     """
     Run Python code in the current environment.
 
     Parameters:
         code: The Python code to execute
-        variable_to_return: Optional variable name to return its value
 
     Returns:
-        str: The value of variable_to_return if provided, otherwise success message or error
+        str: The print output or error message
     """
-    return python_runner.run_python_code(code, variable_to_return)
+    return python_runner.run_python_code(code)
 
 
 @mcp.tool()

@@ -45,7 +45,7 @@ from run_python_code import RunPythonCode
 tool = RunPythonCode(base_dir='/tmp/tmp_run_code/')
 
 # 示例1：基本代码执行
-result = tool.run_python_code("x = 10\ny = 20\nz = x * y", "z")
+result = tool.run_python_code("x = 10\ny = 20\nz = x * y\nprint(z)")
 print(f"结果: {result}")  # 输出: 结果: 200
 
 # 示例2：保存并运行文件
@@ -107,8 +107,8 @@ uvx mcp-run-python-code
 from run_python_code import RunPythonCode
 tool = RunPythonCode(base_dir='/tmp/tmp_run_code/')
 # Execute simple calculations
-code = "result = 2 ** 10"
-value = tool.run_python_code(code, "result")
+code = "result = 2 ** 10; print(f'Result: {result}')"
+value = tool.run_python_code(code)
 print(value)  # Output: 1024
 ```
 
@@ -139,8 +139,9 @@ code = """
 import json
 data = {'name': '张三', 'age': 30}
 json_str = json.dumps(data, ensure_ascii=False)
+print(json_str)
 """
-result = tool.run_python_code(code, "json_str")
+result = tool.run_python_code(code)
 print(result)  # Output: {"name": "张三", "age": 30}
 ```
 

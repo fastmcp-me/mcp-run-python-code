@@ -54,7 +54,6 @@ app.add_middleware(
 # Pydantic models
 class CodeExecutionRequest(BaseModel):
     code: str
-    variable_to_return: Optional[str] = None
     timeout: Optional[int] = 90
 
 
@@ -119,8 +118,7 @@ async def execute(request: CodeExecutionRequest):
         logger.info(f"Executing code (ID: {execution_id}): {request.code[:100]}...")
 
         result = app.state.python_runner.run_python_code(
-            request.code,
-            request.variable_to_return
+            request.code
         )
         logger.info(f"Execution result (ID: {execution_id}): {result}")
         return ExecutionResponse(

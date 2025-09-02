@@ -3,10 +3,13 @@
 @author:XuMing(xuming624@qq.com)
 @description: 
 """
-from loguru import logger
-import os
-import runpy
 from typing import Optional
+import os
+import io
+import sys
+import traceback
+from loguru import logger
+import runpy
 
 
 class RunPythonCode:
@@ -26,32 +29,30 @@ class RunPythonCode:
         self.safe_globals: dict = safe_globals or globals()
         self.safe_locals: dict = safe_locals or locals()
 
-    def run_python_code(self, code: str, variable_to_return: Optional[str] = None) -> str:
+    def run_python_code(self, python_code: str) -> str:
         """This function to runs Python code in the current environment.
-        If successful, returns the value of `variable_to_return` if provided otherwise returns a success message.
-        If failed, returns an error message.
-
-        Returns the value of `variable_to_return` if successful, otherwise returns an error message.
-
-        :param code: The code to run.
-        :param variable_to_return: The variable to return.
-        :return: value of `variable_to_return` if successful, otherwise returns an error message.
+        :param python_code: The code to run.
         """
+        logger.debug(f"Running code:\n\n{python_code}\n\n")
+        old_stdout = sys.stdout
+        new_stdout = io.StringIO()
+        sys.stdout = new_stdout
         try:
-            logger.debug(f"Running code:\n\n{code}\n\n")
-            exec(code, self.safe_globals, self.safe_locals)
-
-            if variable_to_return:
-                variable_value = self.safe_locals.get(variable_to_return)
-                if variable_value is None:
-                    return f"Variable {variable_to_return} not found"
-                logger.debug(f"Variable {variable_to_return} value: {variable_value}")
-                return str(variable_value)
-            else:
-                return "successfully ran python code"
+            # compile the code to check for syntax errors
+            code = compile(python_code, '<string>', 'exec')
+            namespace = {}
+            # execute the code
+            exec(code, namespace)
+            result = str(new_stdout.getvalue().strip())
         except Exception as e:
-            logger.error(f"Error running python code: {e}")
-            return f"Error running python code: {e}"
+            error = str(e)
+            error_traceback = traceback.format_exc()
+            logger.error(f"Error: {error}\n\nTraceback:\n{error_traceback}")
+            result = f"Error: {error}\n\nTraceback:\n{error_traceback}"
+        finally:
+            sys.stdout = old_stdout
+            new_stdout.close()
+        return result
 
     def save_to_file_and_run(
             self, file_name: str, code: str, variable_to_return: Optional[str] = None, overwrite: bool = True
@@ -151,7 +152,7 @@ if __name__ == '__main__':
 
     # Demo 1: 基本的代码执行
     print("=== Demo 1: 基本代码执行 ===")
-    result1 = tool.run_python_code("x = 10\ny = 20\nz = x * y\nprint(f'结果: {z}')", "z")
+    result1 = tool.run_python_code("x = 10\ny = 20\nz = x * y\nprint(f'结果: {z}')")
     print(f"结果: {result1}\n")
 
     # Demo 2: 保存并运行文件
@@ -175,7 +176,7 @@ if __name__ == '__main__':
 
     # Demo 5: 错误处理演示
     print("=== Demo 5: 错误处理演示 ===")
-    result5 = tool.run_python_code("invalid_variable = undefined_var + 1", "invalid_variable")
+    result5 = tool.run_python_code("invalid_variable = undefined_var + 1;print(invalid_variable)")
     print(f"结果: {result5}\n")
 
     # Demo 6: 数据处理演示
@@ -186,5 +187,5 @@ data = {'name': '张三', 'age': 30, 'city': '北京'}
 json_str = json.dumps(data, ensure_ascii=False)
 print(f'JSON字符串: {json_str}')
 """
-    result6 = tool.run_python_code(data_code, "json_str")
+    result6 = tool.run_python_code(data_code)
     print(f"结果: {result6}\n")
