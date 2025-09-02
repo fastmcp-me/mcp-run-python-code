@@ -114,11 +114,25 @@ class RunPythonCode:
             import sys
             import subprocess
 
-            subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
-            return f"successfully installed package {package_name}"
+            # 使用pip而不是pip3，并捕获输出
+            process = subprocess.run(
+                [sys.executable, "-m", "pip", "install", package_name],
+                capture_output=True,
+                text=True
+            )
+
+            if process.returncode == 0:
+                result = f"Successfully installed package {package_name}\n{process.stdout}"
+                logger.debug(result)
+                return result
+            else:
+                error_msg = f"Error installing package {package_name}: {process.stderr}"
+                logger.error(error_msg)
+                return error_msg
         except Exception as e:
-            logger.error(f"Error installing package {package_name}: {e}")
-            return f"Error installing package {package_name}: {e}"
+            error_msg = f"Error installing package {package_name}: {e}"
+            logger.error(error_msg)
+            return error_msg
 
     def run_python_file_return_variable(self, file_name: str, variable_to_return: Optional[str] = None) -> str:
         """This function runs code in a Python file.
