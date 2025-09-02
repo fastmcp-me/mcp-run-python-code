@@ -4,7 +4,7 @@
 @description:
 """
 import sys
-
+import os
 from setuptools import setup, find_packages
 
 __version__ = "0.0.2"
@@ -12,8 +12,10 @@ __version__ = "0.0.2"
 if sys.version_info < (3,):
     sys.exit('Sorry, Python3 is required.')
 
-with open('README.md', 'r', encoding='utf-8') as f:
-    readme = f.read()
+readme = ""
+if os.path.exists('README.md'):
+    with open('README.md', 'r', encoding='utf-8') as f:
+        readme = f.read()
 
 setup(
     name='mcp-run-python-code',
@@ -44,6 +46,8 @@ setup(
         "mcp",
         "requests",
         "loguru",
+        "fastapi",
+        "uvicorn",
     ],
     packages=find_packages(exclude=['tests']),
     package_dir={'mcp-run-python-code': 'run_python_code'},

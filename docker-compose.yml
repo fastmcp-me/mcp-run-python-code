@@ -19,3 +19,32 @@ services:
     tty: true
     # MCP servers typically use stdio transport, so we need to run in interactive mode
     command: ["mcp-run-python-code"]
+
+  fastapi-server:
+    build: .
+    container_name: mcp-fastapi-server
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # Optional: Mount local code for development/testing
+      # - ./code_execution:/tmp/code_execution
+      # Optional: Mount logs directory
+      # - ./logs:/var/log
+    environment:
+      # Set log level (optional)
+      # LOG_LEVEL: INFO
+    command: ["python3", "-m", "run_python_code.fastapi_server"]
+    
+  # Optional: Development service with live reload
+  # Uncomment the service below for development purposes
+  # dev:
+  #   build: 
+  #     context: .
+  #     dockerfile: Dockerfile.dev
+  #   volumes:
+  #     - .:/app
+  #   container_name: mcp-run-python-code-dev
+  #   environment:
+  #     PYTHONPATH: /app
+  #   command: ["bash"]

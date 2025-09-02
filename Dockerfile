@@ -20,13 +20,13 @@ RUN groupadd -r mcpuser && useradd -r -g mcpuser mcpuser
 COPY requirements.txt .
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code
 COPY . .
 
 # Install the package in development mode
-RUN pip install -e .
+RUN pip3 install -e .
 
 # Create temporary directory for code execution
 RUN mkdir -p /tmp/code_execution && \
@@ -39,8 +39,7 @@ USER mcpuser
 # Set the default working directory for code execution
 WORKDIR /tmp/code_execution
 
-# Expose the default stdio port (though MCP typically uses stdio, not HTTP)
-# This is for potential future web interface or monitoring
+# Expose ports for both MCP (stdio) and FastAPI
 EXPOSE 8000
 
 # Health check

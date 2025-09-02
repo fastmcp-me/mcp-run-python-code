@@ -6,14 +6,14 @@ CLI entry point for the MCP Weather Server.
 """
 from loguru import logger
 import sys
-from run_python_code.server import run_server
+from run_python_code.mcp_server import run_mcp_server
 
 
 def main():
     """Main entry point for the RunPythonCode MCP Server."""
     logger.info("RunPythonCode MCP Server running...")
     try:
-        run_server()
+        run_mcp_server()
     except KeyboardInterrupt:
         logger.info("Server interrupted, shutting down...")
     except Exception as e:

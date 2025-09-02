@@ -85,7 +85,7 @@ def run_python_file(file_name: str, variable_to_return: Optional[str] = None) ->
     return python_runner.run_python_file_return_variable(file_name, variable_to_return)
 
 
-def run_server():
+def run_mcp_server():
     """
     Run the MCP server with the specified transport.
     """
