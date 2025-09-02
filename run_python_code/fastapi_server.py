@@ -30,11 +30,6 @@ async def lifespan(app: FastAPI):
 
     # Shutdown
     logger.info("FastAPI server shutting down...")
-    # Clean up temporary directory
-    import shutil
-    if os.path.exists(temp_dir):
-        shutil.rmtree(temp_dir)
-        logger.info(f"Temporary directory cleaned up: {temp_dir}")
 
 
 app = FastAPI(
@@ -112,7 +107,7 @@ async def health_check():
 
 
 @app.post("/execute", response_model=ExecutionResponse)
-async def execute_code(request: CodeExecutionRequest):
+async def execute(request: CodeExecutionRequest):
     """Execute Python code"""
     global execution_counter
     execution_id = str(uuid.uuid4())
@@ -125,7 +120,7 @@ async def execute_code(request: CodeExecutionRequest):
             request.code,
             request.variable_to_return
         )
-
+        logger.info(f"Execution result (ID: {execution_id}): {result}")
         return ExecutionResponse(
             success=True,
             result=result,
